@@ -52,82 +52,75 @@
         .crop-select-mobile { display: none; }
 
         @media (max-width: 768px) {
-            body { padding: 15px; } /* Увеличил отступы от краёв для симметрии */
+            body { padding: 0; } /* Убраны отступы от краёв */
             .main-header { 
                 flex-direction: column; 
                 align-items: center; 
                 text-align: center; 
                 gap: 10px; 
-                margin-bottom: 20px;
             }
             .left-header { justify-content: center; }
             .logo-image { max-width: 80px; }
             h1 { font-size: 1.8em; }
-            #current-date { 
-                font-size: 0.8em; /* Уменьшил размер блока */
-                padding: 5px 10px; /* Уменьшил отступы внутри */
-                border-radius: 8px; 
-            }
+            #current-date { font-size: 0.9em; padding: 8px 12px; }
 
-            /* Одинаковые отступы между блоками и от краёв */
+            /* Блоки плотно к стенкам, без отступов, одинаковые ширины */
             .form-container { 
                 align-items: center; 
                 width: 100%; 
-                gap: 20px; /* Одинаковый gap между блоками */
+                gap: 20px; /* Одинаковый отступ между блоками */
             }
             .form-group { 
                 width: 100%; 
-                max-width: 420px; 
-                margin: 0 auto; /* Без bottom, gap решает */
-                align-items: center; 
+                margin: 0; /* Без отступов */
             }
             .crop-card, 
             .area-card { 
                 width: 100%; 
-                max-width: 420px; 
-                margin: 0 auto; 
+                border-radius: 0; /* Убраны скругления для плотности */
+                box-shadow: none; /* Убраны тени для плотности */
+                padding: 15px; /* Внутренний отступ поменьше */
             }
             #instruction-message { 
                 width: 100%; 
-                max-width: 420px; 
-                margin: 0 auto; 
+                margin: 0; 
+                padding: 15px; 
+                border-radius: 0; 
             }
             #results { 
-                margin-top: 20px; /* Унифицировал отступ сверху */
                 width: 100%; 
-                max-width: 420px; 
-                margin-left: auto; 
-                margin-right: auto; 
+                margin: 20px 0 0 0; /* Только сверху отступ */
                 gap: 20px; 
             }
             #results .result-section { 
                 width: 100%; 
-                max-width: 420px; 
-                margin: 0 auto; 
+                border-radius: 0; 
+                padding: 15px; 
+                box-shadow: none; 
             }
             footer { 
-                margin-top: 20px; /* Унифицировал отступ сверху */
+                width: 100%; 
+                margin: 20px 0 0 0; /* Только сверху отступ */
             }
             .label-image { 
-                max-width: 90%; 
-                display: block; 
-                margin: 0 auto; 
+                width: 100%; /* Полная ширина */
+                max-width: 100%; 
+                border-radius: 0; 
             }
 
             input[type="number"] { font-size: 1em; padding: 10px 60px 10px 10px; }
             .area-suffix { bottom: 26px; right: 25px; font-size: 0.9em; }
-            #instruction-message { font-size: 0.9em; padding: 15px 20px; }
+            #instruction-message { font-size: 0.9em; padding: 15px; }
             canvas { height: 150px !important; }
 
             #crops { display: none; }
             .crop-select-mobile {
                 display: block;
                 width: 100%;
-                max-width: 420px;
                 min-height: 140px;
                 padding: 12px;
                 border: 2px solid rgba(76,175,80,0.4);
-                border-radius: 12px;
+                border-radius: 0;
                 background: rgba(255,255,255,0.95);
                 font-size: 1.1em;
                 font-family: 'Poppins', sans-serif;
@@ -279,15 +272,12 @@
         if (mobileSelect) mobileSelect.addEventListener('change', calculate);
         areaInput.addEventListener('input', calculate);
 
-        // Короткий формат даты + температура
-        const today = new Date();
-        const shortDate = today.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' }).replace('/', '.');
-        document.getElementById('current-date').textContent = shortDate;
-
-        fetch('https://wttr.in/Nairobi?format=%t&lang=en')
+        const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+        document.getElementById('current-date').textContent = today;
+        fetch('https://wttr.in/Nairobi?format=%c+%t&lang=en')
             .then(r => r.text())
-            .then(temp => document.getElementById('current-date').textContent = `${shortDate} ${temp.trim()}`)
-            .catch(() => document.getElementById('current-date').textContent = shortDate);
+            .then(w => document.getElementById('current-date').textContent = `${today} | Nairobi ${w.trim()}`)
+            .catch(() => {});
 
         calculate();
     </script>
