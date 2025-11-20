@@ -52,7 +52,7 @@
         .crop-select-mobile { display: none; }
 
         @media (max-width: 768px) {
-            body { padding: 0; } /* Убраны отступы от краёв */
+            body { padding: 0.5rem; } /* Отступ 0.5rem с каждой стороны */
             .main-header { 
                 flex-direction: column; 
                 align-items: center; 
@@ -64,63 +64,52 @@
             h1 { font-size: 1.8em; }
             #current-date { font-size: 0.9em; padding: 8px 12px; }
 
-            /* Блоки плотно к стенкам, без отступов, одинаковые ширины */
+            /* Блоки по центру */
             .form-container { 
                 align-items: center; 
                 width: 100%; 
-                gap: 20px; /* Одинаковый отступ между блоками */
             }
             .form-group { 
                 width: 100%; 
-                margin: 0; /* Без отступов */
+                max-width: 420px; 
+                margin: 0 auto 20px auto; 
+                align-items: center; 
             }
             .crop-card, 
-            .area-card { 
-                width: 100%; 
-                border-radius: 0; /* Убраны скругления для плотности */
-                box-shadow: none; /* Убраны тени для плотности */
-                padding: 15px; /* Внутренний отступ поменьше */
+            .area-card, 
+            #instruction-message,
+            #results,
+            footer {
+                width: 100%;
+                max-width: 420px;
+                margin-left: auto;
+                margin-right: auto;
             }
-            #instruction-message { 
-                width: 100%; 
-                margin: 0; 
-                padding: 15px; 
-                border-radius: 0; 
+            #results .result-section {
+                width: 100%;
+                max-width: 420px;
             }
-            #results { 
-                width: 100%; 
-                margin: 20px 0 0 0; /* Только сверху отступ */
-                gap: 20px; 
-            }
-            #results .result-section { 
-                width: 100%; 
-                border-radius: 0; 
-                padding: 15px; 
-                box-shadow: none; 
-            }
-            footer { 
-                width: 100%; 
-                margin: 20px 0 0 0; /* Только сверху отступ */
-            }
-            .label-image { 
-                width: 100%; /* Полная ширина */
-                max-width: 100%; 
-                border-radius: 0; 
+            .label-image {
+                max-width: 90%;
+                display: block;
+                margin: 0 auto;
             }
 
             input[type="number"] { font-size: 1em; padding: 10px 60px 10px 10px; }
             .area-suffix { bottom: 26px; right: 25px; font-size: 0.9em; }
-            #instruction-message { font-size: 0.9em; padding: 15px; }
+            #instruction-message { font-size: 0.9em; padding: 15px 20px; }
+            #results { grid-template-columns: 1fr; }
             canvas { height: 150px !important; }
 
             #crops { display: none; }
             .crop-select-mobile {
                 display: block;
                 width: 100%;
+                max-width: 420px;
                 min-height: 140px;
                 padding: 12px;
                 border: 2px solid rgba(76,175,80,0.4);
-                border-radius: 0;
+                border-radius: 12px;
                 background: rgba(255,255,255,0.95);
                 font-size: 1.1em;
                 font-family: 'Poppins', sans-serif;
