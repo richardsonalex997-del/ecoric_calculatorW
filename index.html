@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Calculator for Farmers: EcoRic</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Added Chart.js CDN for functionality -->
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -71,6 +71,11 @@
             display: flex;
             flex-direction: column;
         }
+        .area-form {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto; /* Center the smaller area card */
+        }
         .crop-card, .area-card {
             background-color: rgba(240, 247, 255, 0.5); /* Semi-transparent light blue background from analysis */
             border-radius: 20px; /* Rounded corners */
@@ -90,6 +95,9 @@
         }
         .crop-options {
             flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Grid for better width and responsiveness */
+            gap: 10px;
         }
         .crop-option {
             display: flex;
@@ -141,16 +149,17 @@
         }
         #instruction-message {
             text-align: center;
-            font-size: 1em; /* Increased size */
+            font-size: 1.2em; /* Increased size */
             color: #222; /* Darker color for noticeability */
             font-weight: 600; /* Bolder text */
             margin: 5px 0;
-            padding: 10px 15px; /* Increased padding */
+            padding: 15px 20px; /* Increased padding */
             background-color: rgba(255, 255, 255, 0.9); /* Higher opacity */
             border-radius: 10px; /* Slightly larger radius */
-            max-width: 90%; /* Slightly wider */
+            max-width: 100%; /* Slightly wider */
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
         }
@@ -252,6 +261,12 @@
             .label-image {
                 max-width: 90%;
             }
+            .area-form {
+                max-width: 100%;
+            }
+            .crop-options {
+                grid-template-columns: 1fr; /* Stack crops on mobile */
+            }
         }
     </style>
 </head>
@@ -263,9 +278,9 @@
         </div>
         <div id="current-date"></div>
     </header>
-   
+  
     <div class="form-container">
-        <div class="form-group crop-card"> <!-- Wrapped in card style -->
+        <div class="form-group crop-card"> <!-- Select crop(s): block - wider and larger -->
             <label for="crops">Select crop(s):</label>
             <div id="crops" class="crop-options">
                 <label class="crop-option"><input type="checkbox" value="maize"> 🌽 Maize</label>
@@ -280,22 +295,22 @@
                 <label class="crop-option"><input type="checkbox" value="peppers"> 🌶️ Peppers</label>
             </div>
         </div>
-       
-        <p id="instruction-message">Select crops and enter area. <span id="total-consumption"></span></p>
-       
-        <div class="form-group area-card"> <!-- Wrapped in similar card style -->
+      
+        <div class="form-group area-form area-card"> <!-- Field area block - smaller width -->
             <label for="area">Field area (in acres):</label>
             <input type="number" id="area" min="0.01" max="10000" step="0.01" value="1" placeholder="Enter area">
             <span class="area-suffix">acres</span>
         </div>
+      
+        <p id="instruction-message">Select crops and enter area. <span id="total-consumption"></span></p> <!-- Select crops and enter area block -->
     </div>
-   
+  
     <div id="results"></div>
-   
+  
     <footer>
         <img src="https://raw.githubusercontent.com/richardsonalex997-del/ecotic_product_label.png/79a0064929704a9164eec0f69a1be9f759b1be4e/2025-11-20_09-37-32.png" alt="EcoRic Product Label" class="label-image">
     </footer>
-   
+  
     <script>
         // Crop data from analysis
         const crops = {
@@ -348,11 +363,11 @@
                 let baseIncome = baseYield * priceUnit;
                 let deltaIncome = deltaYield * priceUnit;
                 html += `<div class="result-section">
-                    <h2>${crop.emoji} ${cropKey.charAt(0).toUpperCase() + cropKey.slice(1)}</h2>
+                    <h2>${crop.emoji} ${cropKey.charAt(0).toUpperCase() + cropKey.slice(1).replace('_', ' ')}</h2>
                     <p>Base yield: ${baseYield.toFixed(2)} ${yieldUnit}</p>
                     <p>Base income: ${baseIncome.toFixed(0)} Ksh</p>
                     <p><strong>Total yield: ${totalYield.toFixed(2)} ${yieldUnit}</strong></p>
-                    <p><strong>Base income: ${baseIncome.toFixed(0)} Ksh</strong></p>
+                    <p><strong>Total income: ${ (baseIncome + deltaIncome).toFixed(0) } Ksh</strong></p>
                     <p><strong>Additional income: ${deltaIncome.toFixed(0)} Ksh</strong></p>
                     <canvas id="chart_${cropKey}" height="200"></canvas>
                 </div>`;
@@ -364,12 +379,12 @@
                             labels: ['Base', 'With EcoRic'],
                             datasets: [{ label: 'Yield', data: [baseYield, totalYield], backgroundColor: ['#4CAF50', '#2196F3'] }]
                         },
-                        options: { 
+                        options: {
                             animation: {
                                 duration: 1500, // Animation duration
                                 easing: 'easeOutQuart' // Easing function
                             },
-                            scales: { y: { beginAtZero: true } } 
+                            scales: { y: { beginAtZero: true } }
                         }
                     });
                 }, 0);
@@ -379,13 +394,11 @@
         // Events
         cropContainer.addEventListener('change', calculate);
         areaInput.addEventListener('input', calculate);
-
         // Set current date and weather dynamically
         const today = new Date();
         const formattedDate = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
         const dateElement = document.getElementById('current-date');
         dateElement.innerText = formattedDate;
-
         fetch('https://wttr.in/Nairobi?format=%c+%t')
             .then(response => response.text())
             .then(data => {
@@ -395,6 +408,8 @@
                 console.error('Error fetching weather:', error);
                 dateElement.innerText = formattedDate + ' | Weather unavailable';
             });
+        // Initial calculation if needed
+        calculate();
     </script>
 </body>
 </html>
