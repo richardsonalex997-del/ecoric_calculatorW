@@ -39,7 +39,7 @@
         input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input:focus { border-color: #2196F3; box-shadow: 0 0 5px rgba(33,150,243,0.5); outline: none; }
         .area-suffix { position: absolute; bottom: 28px; right: 30px; color: #333; font-size: 1em; pointer-events: none; z-index: 1; }
-        #instruction-message { text-align: center; font-size: 1.2em; color: #222; font-weight: 600; margin: 5px 0; padding: 15px 20px; background-color: rgba(255,255,255,0.9); border-radius: 10px; max-width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0,0.1); }
+        #instruction-message { text-align: center; font-size: 1.2em; color: #222; font-weight: 600; margin: 5px 0; padding: 15px 20px; background-color: rgba(255,255,255,0.9); border-radius: 10px; max-width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         #total-consumption { font-size: 0.9em; color: #4CAF50; background-color: rgba(76,175,80,0.2); padding: 5px 10px; border-radius: 6px; }
         #results { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .result-section { background-color: rgba(255,255,255,0.9); padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s; }
@@ -64,9 +64,17 @@
             h1 { font-size: 1.8em; }
             #current-date { font-size: 0.9em; padding: 8px 12px; }
 
-            /* ВСЕ БЛОКИ ПО ЦЕНТРУ И ОДИНАКОВАЯ ШИРИНА */
-            .form-container { align-items: center; width: 100%; }
-            .form-group, 
+            /* ПОЛНОЕ ЦЕНТРИРОВАНИЕ ВСЕХ БЛОКОВ НА МОБИЛЬНЫХ */
+            .form-container { 
+                align-items: center; 
+                width: 100%; 
+            }
+            .form-group { 
+                width: 100%; 
+                max-width: 420px; 
+                margin: 0 auto 20px auto; 
+                align-items: center; 
+            }
             .crop-card, 
             .area-card, 
             #instruction-message,
@@ -76,12 +84,10 @@
                 max-width: 420px;
                 margin-left: auto;
                 margin-right: auto;
-                margin-bottom: 20px;
             }
             #results .result-section {
                 width: 100%;
                 max-width: 420px;
-                margin: 0 auto 20px auto;
             }
             .label-image {
                 max-width: 90%;
