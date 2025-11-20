@@ -51,46 +51,80 @@
 
         .crop-select-mobile { display: none; }
 
-        @media (max-width: 768px) {
-            body { padding: 10px; }
-            .main-header { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
-            .left-header { justify-content: center; }
-            .logo-image { max-width: 80px; }
-            h1 { font-size: 1.8em; }
-            #current-date { font-size: 0.9em; padding: 8px 12px; }
+.crop-select-mobile { display: none; }
 
-            .form-group { align-items: center; }
-            .crop-card, .area-card { width: 100%; max-width: 420px; margin: 0 auto; }
+@media (max-width: 768px) {
+    body { padding: 10px; }
+    .main-header { 
+        flex-direction: column; 
+        align-items: center; 
+        text-align: center; 
+        gap: 10px; 
+    }
+    .left-header { justify-content: center; }
+    .logo-image { max-width: 80px; }
+    h1 { font-size: 1.8em; }
+    #current-date { font-size: 0.9em; padding: 8px 12px; }
 
-            input[type="number"] { font-size: 1em; padding: 10px 60px 10px 10px; }
-            .area-suffix { bottom: 26px; right: 25px; font-size: 0.9em; }
-            #instruction-message { font-size: 0.9em; padding: 12px; }
-            #results { grid-template-columns: 1fr; }
-            canvas { height: 150px !important; }
-            .label-image { max-width: 90%; }
+    /* ПОЛНОЕ ЦЕНТРИРОВАНИЕ ВСЕХ БЛОКОВ НА МОБИЛЬНЫХ */
+    .form-container { 
+        align-items: center; 
+        width: 100%; 
+    }
+    .form-group { 
+        width: 100%; 
+        max-width: 420px; 
+        margin: 0 auto 20px auto; 
+        align-items: center; 
+    }
+    .crop-card, 
+    .area-card, 
+    #instruction-message,
+    #results,
+    footer {
+        width: 100%;
+        max-width: 420px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #results .result-section {
+        width: 100%;
+        max-width: 420px;
+    }
+    .label-image {
+        max-width: 90%;
+        display: block;
+        margin: 0 auto;
+    }
 
-            #crops { display: none; }
-            .crop-select-mobile {
-                display: block;
-                width: 100%;
-                max-width: 420px;
-                min-height: 140px;
-                padding: 12px;
-                border: 2px solid rgba(76,175,80,0.4);
-                border-radius: 12px;
-                background: rgba(255,255,255,0.95);
-                font-size: 1.1em;
-                font-family: 'Poppins', sans-serif;
-            }
-            .crop-select-mobile option { padding: 8px 0; }
-            .crop-card label::after {
-                content: " (tap & hold to select multiple)";
-                font-size: 0.8em;
-                color: #555;
-                display: block;
-                margin-top: 4px;
-            }
-        }
+    input[type="number"] { font-size: 1em; padding: 10px 60px 10px 10px; }
+    .area-suffix { bottom: 26px; right: 25px; font-size: 0.9em; }
+    #instruction-message { font-size: 0.9em; padding: 12px; }
+    #results { grid-template-columns: 1fr; }
+    canvas { height: 150px !important; }
+
+    #crops { display: none; }
+    .crop-select-mobile {
+        display: block;
+        width: 100%;
+        max-width: 420px;
+        min-height: 140px;
+        padding: 12px;
+        border: 2px solid rgba(76,175,80,0.4);
+        border-radius: 12px;
+        background: rgba(255,255,255,0.95);
+        font-size: 1.1em;
+        font-family: 'Poppins', sans-serif;
+    }
+    .crop-select-mobile option { padding: 8px 0; }
+    .crop-card label::after {
+        content: " (tap & hold to select multiple)";
+        font-size: 0.8em;
+        color: #555;
+        display: block;
+        margin-top: 4px;
+    }
+}
     </style>
 </head>
 <body>
