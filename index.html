@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>ecoric_calculator</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Calculator for Farmers: EcoRic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-image: url('https://raw.githubusercontent.com/richardsonalex997-del/ecoric_backround1/b1b761422f5a8d65761fa65278c34a91d584e017/5136c25c-746c-4746-9740-4174045a6fc9%20(1).png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+            background-attachment: fixed; /* Prevent background from moving/resizing */
+        }
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px; /* Reduced margin for lifting the title */
+        }
+        .left-header {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between logo and title */
+        }
+        .logo-image {
+            max-width: 100px; /* Adjusted size */
+            height: auto;
+        }
+        #current-date {
+            background-color: rgba(240, 247, 255, 0.7); /* Matching semi-transparent background */
+            padding: 10px 15px;
+            border-radius: 12px; /* Softer rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+            font-size: 1em;
+            font-weight: 600; /* Bolder text */
+            color: #4CAF50; /* Eco green color */
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Space between icon and text */
+            border: 1px solid rgba(76, 175, 80, 0.3); /* Subtle green border */
+            white-space: nowrap; /* Prevent wrapping for symmetry */
+        }
+        #current-date::before {
+            content: '📅'; /* Calendar icon */
+            font-size: 1.2em;
+        }
+        h1 {
+            color: #4CAF50; /* Eco green */
+            font-weight: 700;
+            font-size: 2em; /* Reduced size for balance */
+            margin: 0; /* Remove margins for inline fit */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Added shadow for contrast */
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .crop-card, .area-card {
+            background-color: rgba(240, 247, 255, 0.5); /* Semi-transparent light blue background from analysis */
+            border-radius: 20px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            padding: 20px;
+            flex-grow: 1; /* Grow to fill the form-group */
+            display: flex;
+            flex-direction: column;
+            position: relative; /* For area-card suffix */
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #000; /* Black for title */
+            font-size: 1.2em; /* Larger bold font */
+        }
+        .crop-options {
+            flex-grow: 1;
+        }
+        .crop-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .crop-option:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .crop-option input {
+            margin-right: 10px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 70px 12px 12px; /* Further increased space for suffix to prevent overflow */
+            border: 1px solid #ccc; /* Added border for clarity */
+            border-radius: 8px; /* Rounded corners */
+            background-color: rgba(255, 255, 255, 0.8); /* Increased opacity for better visibility */
+            font-size: 1.2em; /* Larger font for clarity */
+            font-weight: 600; /* Bolder text */
+            transition: border-color 0.3s, box-shadow 0.3s; /* Added shadow transition */
+            color: #000; /* Black color for text */
+            flex-grow: 1; /* Grow to fill space */
+            appearance: textfield; /* Remove arrows */
+            box-sizing: border-box; /* Ensure padding is included in width */
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input:focus {
+            border-color: #2196F3;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.5); /* Glow effect */
+            outline: none;
+        }
+        .area-suffix {
+            position: absolute;
+            bottom: 28px; /* Adjusted for alignment */
+            right: 30px; /* Increased to shift left and avoid edge */
+            color: #333; /* Darker gray color */
+            font-size: 1em;
+            pointer-events: none; /* Allow clicks through */
+            z-index: 1; /* Ensure on top */
+        }
+        #instruction-message {
+            text-align: center;
+            font-size: 1em; /* Increased size */
+            color: #222; /* Darker color for noticeability */
+            font-weight: 600; /* Bolder text */
+            margin: 5px 0;
+            padding: 10px 15px; /* Increased padding */
+            background-color: rgba(255, 255, 255, 0.9); /* Higher opacity */
+            border-radius: 10px; /* Slightly larger radius */
+            max-width: 90%; /* Slightly wider */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+        }
+        #total-consumption {
+            font-size: 0.9em;
+            color: #4CAF50;
+            background-color: rgba(76, 175, 80, 0.2);
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+        #results {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .result-section {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white for readability on background image */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Modern shadow */
+            transition: transform 0.2s; /* Subtle hover lift */
+        }
+        .result-section:hover {
+            transform: translateY(-5px);
+        }
+        .result-section h2 {
+            color: #4CAF50;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        canvas {
+            max-width: 100%;
+            margin-top: 10px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .label-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="left-header">
+            <img src="https://raw.githubusercontent.com/richardsonalex997-del/ecoric_logo.png/9504296080f2ac886a5a876bd46a111a92e6b557/ecoric_label.png.png" alt="EcoRic Logo" class="logo-image">
+            <h1>Calculator</h1>
+        </div>
+        <div id="current-date"></div>
+    </header>
+   
+    <div class="form-container">
+        <div class="form-group crop-card"> <!-- Wrapped in card style -->
+            <label for="crops">Select crop(s):</label>
+            <div id="crops" class="crop-options">
+                <label class="crop-option"><input type="checkbox" value="maize"> 🌽 Maize</label>
+                <label class="crop-option"><input type="checkbox" value="beans"> 🌱 Beans</label>
+                <label class="crop-option"><input type="checkbox" value="tomatoes"> 🍅 Tomatoes</label>
+                <label class="crop-option"><input type="checkbox" value="potatoes"> 🥔 Potatoes</label>
+                <label class="crop-option"><input type="checkbox" value="tea_young"> 🍵 Tea (young)</label>
+                <label class="crop-option"><input type="checkbox" value="tea_mature"> 🍵 Tea (mature)</label>
+                <label class="crop-option"><input type="checkbox" value="cabbage"> 🥬 Cabbage</label>
+                <label class="crop-option"><input type="checkbox" value="spinach"> 🌿 Spinach</label>
+                <label class="crop-option"><input type="checkbox" value="onions"> 🧅 Onions</label>
+                <label class="crop-option"><input type="checkbox" value="peppers"> 🌶️ Peppers</label>
+            </div>
+        </div>
+       
+        <p id="instruction-message">Select crops and enter area. <span id="total-consumption"></span></p>
+       
+        <div class="form-group area-card"> <!-- Wrapped in similar card style -->
+            <label for="area">Field area (in acres):</label>
+            <input type="number" id="area" min="0.01" max="10000" step="0.01" value="1" placeholder="Enter area">
+            <span class="area-suffix">acres</span>
+        </div>
+    </div>
+   
+    <div id="results"></div>
+   
+    <footer>
+        <img src="https://raw.githubusercontent.com/richardsonalex997-del/ecotic_product_label.png/79a0064929704a9164eec0f69a1be9f759b1be4e/2025-11-20_09-37-32.png" alt="EcoRic Product Label" class="label-image">
+    </footer>
+   
+    <script>
+        // Crop data from analysis
+        const crops = {
+            maize: { baseYield: 90, unit: 'bags/ha', price: 3000, increase: 15, emoji: '🌽' },
+            beans: { baseYield: 6, unit: 'bags/ha', price: 8000, increase: 20, emoji: '🌱' },
+            tomatoes: { baseYield: 30, unit: 'tons/ha', price: 40000, increase: 50, emoji: '🍅' },
+            potatoes: { baseYield: 20, unit: 'tons/ha', price: 30000, increase: 50, emoji: '🥔' },
+            tea_young: { baseYield: 2, unit: 'tons/ha', price: 500, increase: 30, emoji: '🍵' },
+            tea_mature: { baseYield: 4, unit: 'tons/ha', price: 400, increase: 25, emoji: '🍵' },
+            cabbage: { baseYield: 40, unit: 'tons/ha', price: 20000, increase: 40, emoji: '🥬' },
+            spinach: { baseYield: 15, unit: 'tons/ha', price: 50000, increase: 60, emoji: '🌿' },
+            onions: { baseYield: 25, unit: 'tons/ha', price: 35000, increase: 35, emoji: '🧅' },
+            peppers: { baseYield: 20, unit: 'tons/ha', price: 45000, increase: 45, emoji: '🌶️' }
+        };
+        // Constants
+        const ACRES_TO_HA = 0.404686;
+        const ACRES_TO_M2 = 4046.86;
+        const ECORIC_PER_M2_ML = 1;
+        // DOM elements
+        const cropContainer = document.getElementById('crops');
+        const areaInput = document.getElementById('area');
+        const resultsDiv = document.getElementById('results');
+        const totalConsumption = document.getElementById('total-consumption');
+        // Calculation function
+        function calculate() {
+            const selectedCrops = Array.from(cropContainer.querySelectorAll('input:checked')).map(input => input.value);
+            const areaAcres = parseFloat(areaInput.value) || 0;
+            if (areaAcres <= 0 || selectedCrops.length === 0) {
+                resultsDiv.innerHTML = ''; // Remove duplicate message
+                totalConsumption.innerHTML = '';
+                return;
+            }
+            let html = '';
+            let totalEcoricLiters = (areaAcres * ACRES_TO_M2 * ECORIC_PER_M2_ML * 3) / 1000;
+            totalConsumption.innerHTML = `EcoRic: ${totalEcoricLiters.toFixed(2)} liters (3 sprays)`;
+            selectedCrops.forEach(cropKey => {
+                const crop = crops[cropKey];
+                const areaHa = areaAcres * ACRES_TO_HA;
+                let baseYield = crop.baseYield * areaHa;
+                let totalYield = baseYield * (1 + crop.increase / 100);
+                let deltaYield = totalYield - baseYield;
+                let yieldUnit = crop.unit.replace('/ha', '');
+                let priceUnit = crop.price;
+                if (crop.unit.includes('tons') && crop.price < 1000) {
+                    baseYield *= 1000;
+                    totalYield *= 1000;
+                    deltaYield *= 1000;
+                    yieldUnit = 'kg';
+                }
+                let baseIncome = baseYield * priceUnit;
+                let deltaIncome = deltaYield * priceUnit;
+                html += `<div class="result-section">
+                    <h2>${crop.emoji} ${cropKey.charAt(0).toUpperCase() + cropKey.slice(1)}</h2>
+                    <p>Base yield: ${baseYield.toFixed(2)} ${yieldUnit}</p>
+                    <p>Base income: ${baseIncome.toFixed(0)} Ksh</p>
+                    <p><strong>Total yield: ${totalYield.toFixed(2)} ${yieldUnit}</strong></p>
+                    <p><strong>Base income: ${baseIncome.toFixed(0)} Ksh</strong></p>
+                    <p><strong>Additional income: ${deltaIncome.toFixed(0)} Ksh</strong></p>
+                    <canvas id="chart_${cropKey}" height="200"></canvas>
+                </div>`;
+                setTimeout(() => {
+                    const ctx = document.getElementById(`chart_${cropKey}`).getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Base', 'With EcoRic'],
+                            datasets: [{ label: 'Yield', data: [baseYield, totalYield], backgroundColor: ['#4CAF50', '#2196F3'] }]
+                        },
+                        options: { 
+                            animation: {
+                                duration: 1500, // Animation duration
+                                easing: 'easeOutQuart' // Easing function
+                            },
+                            scales: { y: { beginAtZero: true } } 
+                        }
+                    });
+                }, 0);
+            });
+            resultsDiv.innerHTML = html;
+        }
+        // Events
+        cropContainer.addEventListener('change', calculate);
+        areaInput.addEventListener('input', calculate);
+
+        // Set current date and weather dynamically
+        const today = new Date();
+        const formattedDate = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const dateElement = document.getElementById('current-date');
+        dateElement.innerText = formattedDate;
+
+        fetch('https://wttr.in/Nairobi?format=%c+%t')
+            .then(response => response.text())
+            .then(data => {
+                dateElement.innerText = formattedDate + ' | Nairobi ' + data;
+            })
+            .catch(error => {
+                console.error('Error fetching weather:', error);
+                dateElement.innerText = formattedDate + ' | Weather unavailable';
+            });
+    </script>
+</body>
+</html>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
