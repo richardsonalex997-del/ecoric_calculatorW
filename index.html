@@ -49,30 +49,31 @@
         footer { text-align: center; margin-top: 40px; }
         .label-image { max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 
-        /* МОБИЛЬНАЯ ВЕРСИЯ — только выпадающий список */
         .crop-select-mobile { display: none; }
 
         @media (max-width: 768px) {
             body { padding: 10px; }
-            .main-header { flex-direction: column; align-items: flex-start; }
-            .left-header { margin-bottom: 10px; }
+            .main-header { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+            .left-header { justify-content: center; }
             .logo-image { max-width: 80px; }
             h1 { font-size: 1.8em; }
             #current-date { font-size: 0.9em; padding: 8px 12px; }
-            .form-group { margin-bottom: 15px; }
-            label { font-size: 1em; }
+
+            .form-group { align-items: center; }
+            .crop-card, .area-card { width: 100%; max-width: 420px; margin: 0 auto; }
+
             input[type="number"] { font-size: 1em; padding: 10px 60px 10px 10px; }
             .area-suffix { bottom: 26px; right: 25px; font-size: 0.9em; }
-            #instruction-message { font-size: 0.9em; padding: 8px 12px; }
+            #instruction-message { font-size: 0.9em; padding: 12px; }
             #results { grid-template-columns: 1fr; }
             canvas { height: 150px !important; }
             .label-image { max-width: 90%; }
-            .area-form { max-width: 100%; }
 
             #crops { display: none; }
             .crop-select-mobile {
                 display: block;
                 width: 100%;
+                max-width: 420px;
                 min-height: 140px;
                 padding: 12px;
                 border: 2px solid rgba(76,175,80,0.4);
@@ -105,7 +106,7 @@
         <div class="form-group crop-card">
             <label>Select crop(s):</label>
 
-            <!-- ДЕСКТОП + обычные мобильные — с твоими эмоджи -->
+            <!-- Десктоп — с эмодзи -->
             <div id="crops" class="crop-options">
                 <label class="crop-option"><input type="checkbox" value="maize"> 🌽 Maize</label>
                 <label class="crop-option"><input type="checkbox" value="beans"> 🌱 Beans</label>
@@ -119,7 +120,7 @@
                 <label class="crop-option"><input type="checkbox" value="peppers"> 🌶️ Peppers</label>
             </div>
 
-            <!-- ТОЛЬКО ДЛЯ МОБИЛЬНЫХ ≤768px — с теми же эмодзи -->
+            <!-- Мобильный — с эмодзи -->
             <select class="crop-select-mobile" multiple>
                 <option value="maize"> 🌽 Maize</option>
                 <option value="beans"> 🌱 Beans</option>
@@ -232,7 +233,7 @@
 
         const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
         document.getElementById('current-date').textContent = today;
-        fetch('https://wttr.in/Nairobi?format=%C+%t')
+        fetch('https://wttr.in/Nairobi?format=%c+%t&lang=en')
             .then(r => r.text())
             .then(w => document.getElementById('current-date').textContent = `${today} | Nairobi ${w.trim()}`)
             .catch(() => {});
